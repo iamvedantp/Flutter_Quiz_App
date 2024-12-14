@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
+import 'screens/quiz_screen.dart';
+import 'screens/results_screen.dart';
 
 void main() {
   runApp(const QuizApp());
@@ -15,6 +17,27 @@ class QuizApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
       home: const HomeScreen(),
+      routes: {
+        '/quiz': (context) => const QuizScreen(),
+        '/results': (context) => ResultsScreen(
+              score: 0,
+              totalQuestions: 0,
+              results: [],
+            ),
+      },
+      onGenerateRoute: (settings) {
+        if (settings.name == '/results') {
+          final args = settings.arguments as Map<String, dynamic>;
+          return MaterialPageRoute(
+            builder: (context) => ResultsScreen(
+              score: args['score'],
+              totalQuestions: args['totalQuestions'],
+              results: args['results'],
+            ),
+          );
+        }
+        return null;
+      },
     );
   }
 }
