@@ -19,11 +19,6 @@ class QuizApp extends StatelessWidget {
       home: const HomeScreen(),
       routes: {
         '/quiz': (context) => const QuizScreen(),
-        '/results': (context) => ResultsScreen(
-              score: 0,
-              totalQuestions: 0,
-              results: [],
-            ),
       },
       onGenerateRoute: (settings) {
         if (settings.name == '/results') {
