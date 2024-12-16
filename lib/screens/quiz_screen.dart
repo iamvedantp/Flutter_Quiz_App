@@ -11,8 +11,7 @@ class QuizScreen extends StatefulWidget {
 class _QuizScreenState extends State<QuizScreen> {
   int _currentQuestionIndex = 0;
   int _selectedOptionIndex = -1;
-  int _score = 0;
-
+  bool _isAnswered = false;
   List<Question> questions = [
     Question(
       text: 'What is Flutter?',
@@ -30,6 +29,7 @@ class _QuizScreenState extends State<QuizScreen> {
         'Flutter is not an operating system.'
       ],
     ),
+
     Question(
       text: 'Which language is used to code Flutter apps?',
       options: ['Java', 'Swift', 'Dart', 'Python'],
@@ -41,6 +41,7 @@ class _QuizScreenState extends State<QuizScreen> {
         'Python is not used to code Flutter apps.'
       ],
     ),
+
     Question(
       text: 'What is the main UI building block in Flutter?',
       options: ['Activity', 'View', 'Widget', 'Fragment'],
@@ -52,6 +53,7 @@ class _QuizScreenState extends State<QuizScreen> {
         'Fragments are used in Android, not Flutter.'
       ],
     ),
+
     Question(
       text: 'Which company developed Flutter?',
       options: ['Microsoft', 'Apple', 'Facebook', 'Google'],
@@ -63,10 +65,11 @@ class _QuizScreenState extends State<QuizScreen> {
         'Flutter was developed by Google.'
       ],
     ),
+
     Question(
       text: 'What does the "hot reload" feature in Flutter do?',
       options: [
-        'Recompiles the app and restarts it',
+        'Recompile the app and restarts it',
         'Refreshes the UI without losing state',
         'Clears all errors',
         'Optimizes app performance'
@@ -79,6 +82,7 @@ class _QuizScreenState extends State<QuizScreen> {
         'Hot reload does not optimize app performance.'
       ],
     ),
+
     Question(
       text: 'What is the default programming paradigm of Flutter?',
       options: ['Object-Oriented', 'Functional', 'Declarative', 'Procedural'],
@@ -90,6 +94,7 @@ class _QuizScreenState extends State<QuizScreen> {
         'Procedural is not the default paradigm.'
       ],
     ),
+
     Question(
       text: 'Which widget is used for immutable UI components?',
       options: [
@@ -106,6 +111,7 @@ class _QuizScreenState extends State<QuizScreen> {
         'Container is a UI widget but not specifically immutable.'
       ],
     ),
+
     Question(
       text: 'What is the purpose of the "pubspec.yaml" file in Flutter?',
       options: [
@@ -122,6 +128,7 @@ class _QuizScreenState extends State<QuizScreen> {
         'It does not create widgets.'
       ],
     ),
+
     Question(
       text: 'Which widget is used for creating scrollable lists?',
       options: ['Column', 'Row', 'ListView', 'GridView'],
@@ -133,6 +140,7 @@ class _QuizScreenState extends State<QuizScreen> {
         'GridView is used for grids, not lists.'
       ],
     ),
+
     Question(
       text: 'What command is used to create a new Flutter project?',
       options: [
@@ -149,45 +157,46 @@ class _QuizScreenState extends State<QuizScreen> {
         'flutter setup is incorrect.'
       ],
     ),
+    // Your question data here
   ];
 
   void _submitAnswer() {
     if (_selectedOptionIndex != -1) {
       setState(() {
+        _isAnswered = true;
         questions[_currentQuestionIndex].selectedOptionIndex =
             _selectedOptionIndex;
-        if (_selectedOptionIndex ==
-            questions[_currentQuestionIndex].correctOptionIndex) {
-          _score++;
-        }
       });
 
-      if (_currentQuestionIndex < questions.length - 1) {
-        setState(() {
-          _currentQuestionIndex++;
-          _selectedOptionIndex = -1;
-        });
-      } else {
-        List<Map<String, dynamic>> results = questions.map((q) {
-          return {
-            'question': q.text,
-            'selectedOption': q.selectedOptionIndex == -1
-                ? 'No answer'
-                : q.options[q.correctOptionIndex],
-            'definitions': q.definitions,
-          };
-        }).toList();
+      Future.delayed(const Duration(seconds: 1), () {
+        if (_currentQuestionIndex < questions.length - 1) {
+          setState(() {
+            _currentQuestionIndex++;
+            _selectedOptionIndex = -1;
+            _isAnswered = false;
+          });
+        } else {
+          List<Map<String, dynamic>> results = questions.map((q) {
+            bool isCorrect = q.selectedOptionIndex == q.correctOptionIndex;
+            return {
+              'question': q.text,
+              'selectedOption': q.selectedOptionIndex != -1
+                  ? q.options[q.selectedOptionIndex]
+                  : 'No answer selected',
+              'correctOption': q.options[q.correctOptionIndex],
+              'isCorrect': isCorrect,
+            };
+          }).toList();
 
-        Navigator.pushNamed(
-          context,
-          '/results',
-          arguments: {
-            'score': _score,
+          int score = results.where((r) => r['isCorrect']).length;
+
+          Navigator.pushNamed(context, '/results', arguments: {
+            'score': score,
             'totalQuestions': questions.length,
-            'results': results
-          },
-        );
-      }
+            'results': results,
+          });
+        }
+      });
     }
   }
 
@@ -217,35 +226,41 @@ class _QuizScreenState extends State<QuizScreen> {
               bool isSelected = index == _selectedOptionIndex;
 
               Color? color;
-              if (currentQuestion.selectedOptionIndex != -1) {
+              if (_isAnswered) {
                 if (isSelected && !isCorrect) {
                   color = Colors.red;
                 } else if (isCorrect) {
                   color = Colors.green;
                 }
               }
+
               return GestureDetector(
-                onTap: () {
-                  if (currentQuestion.selectedOptionIndex == -1) {
-                    setState(() {
-                      _selectedOptionIndex = index;
-                    });
-                  }
-                },
+                onTap: !_isAnswered
+                    ? () {
+                        setState(() {
+                          _selectedOptionIndex = index;
+                        });
+                      }
+                    : null,
                 child: Container(
                   margin: const EdgeInsets.symmetric(vertical: 8.0),
                   padding: const EdgeInsets.all(12.0),
                   decoration: BoxDecoration(
-                    color: color ?? Colors.grey[200],
-                    borderRadius: BorderRadius.circular(8.0),
+                      color: _isAnswered
+                          ? (isCorrect
+                              ? Colors.green
+                              : (isSelected ? Colors.red : Colors.grey[200]))
+                          : (isSelected ? Colors.blue : Colors.transparent)),
+                  child: Text(
+                    option,
+                    style: const TextStyle(fontSize: 16.0),
                   ),
-                  child: Text(option),
                 ),
               );
             }),
             const Spacer(),
             ElevatedButton(
-              onPressed: _submitAnswer,
+              onPressed: _isAnswered ? null : _submitAnswer,
               child: const Text('Next'),
             ),
           ],
