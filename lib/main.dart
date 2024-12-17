@@ -13,9 +13,11 @@ class QuizApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Quiz App',
+      title: 'Flutter Quiz App',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
       home: const HomeScreen(),
       routes: {
         '/quiz': (context) => const QuizScreen(),
@@ -28,6 +30,7 @@ class QuizApp extends StatelessWidget {
               score: args['score'],
               totalQuestions: args['totalQuestions'],
               results: args['results'],
+              difficulty: args['difficulty'],
             ),
           );
         }
