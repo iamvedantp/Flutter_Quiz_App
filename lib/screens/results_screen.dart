@@ -18,19 +18,19 @@ class ResultsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Navigator.pushReplacementNamed(context, '/');
+        Navigator.pushReplacementNamed(context, '/home'); // Back to Home
         return false;
       },
       child: Scaffold(
         appBar: AppBar(
           title: GestureDetector(
-            onTap: () => Navigator.pushReplacementNamed(context, '/'),
+            onTap: () => Navigator.pushReplacementNamed(context, '/home'),
             child: const Text('Quiz'),
           ),
           automaticallyImplyLeading: false,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pushReplacementNamed(context, '/'),
+            onPressed: () => Navigator.pushReplacementNamed(context, '/home'),
           ),
         ),
         body: Padding(
@@ -65,9 +65,14 @@ class ResultsScreen extends StatelessWidget {
                           children: [
                             Text('Your Answer: ${result['selectedOption']}'),
                             Text('Correct Answer: ${result['correctOption']}'),
-                            Text(result['isCorrect']
-                                ? 'Correct!'
-                                : 'Incorrect!'),
+                            Text(
+                              result['isCorrect'] ? 'Correct!' : 'Incorrect!',
+                              style: TextStyle(
+                                color: result['isCorrect']
+                                    ? Colors.green
+                                    : Colors.red,
+                              ),
+                            ),
                           ],
                         ),
                       ),
