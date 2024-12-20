@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+
 import '../models/question_model.dart';
 import '../questions/easy_questions.dart';
 import '../questions/medium_questions.dart';
 import '../questions/hard_questions.dart';
 
 class QuizScreen extends StatefulWidget {
-  const QuizScreen({super.key});
+  final String difficulty;
+
+  const QuizScreen({super.key, required this.difficulty});
 
   @override
   _QuizScreenState createState() => _QuizScreenState();
@@ -18,10 +21,9 @@ class _QuizScreenState extends State<QuizScreen> {
   late List<Question> questions;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final difficulty = ModalRoute.of(context)!.settings.arguments as String;
-    questions = loadQuestionsForDifficulty(difficulty);
+  void initState() {
+    super.initState();
+    questions = loadQuestionsForDifficulty(widget.difficulty);
   }
 
   List<Question> loadQuestionsForDifficulty(String difficulty) {
@@ -62,7 +64,7 @@ class _QuizScreenState extends State<QuizScreen> {
             'score': score,
             'totalQuestions': questions.length,
             'results': results,
-            'difficulty': ModalRoute.of(context)!.settings.arguments,
+            'difficulty': widget.difficulty,
           });
         }
       });
