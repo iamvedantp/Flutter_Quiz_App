@@ -10,7 +10,7 @@ void main() {
 }
 
 class QuizApp extends StatelessWidget {
-  const QuizApp({Key? key}) : super(key: key);
+  const QuizApp({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -10,6 +10,28 @@ class HomeScreen extends StatelessWidget {
         title: const Text('Flutter Quiz App'),
         automaticallyImplyLeading: false,
         centerTitle: true,
+        actions: [
+          PopupMenuButton<String>(
+            onSelected: (value) {
+              if (value == 'logout') {
+                // Handle logout logic
+                Navigator.pushReplacementNamed(context, '/login');
+              }
+            },
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: 'logout',
+                child: Row(
+                  children: const [
+                    Icon(Icons.logout, color: Colors.black54),
+                    SizedBox(width: 8),
+                    Text('Logout'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

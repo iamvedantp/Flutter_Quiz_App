@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quiz_app/mock_database.dart';
 
 class SignupFormScreen extends StatefulWidget {
-  const SignupFormScreen({Key? key}) : super(key: key);
+  const SignupFormScreen({super.key});
 
   @override
   _SignupFormScreenState createState() => _SignupFormScreenState();
