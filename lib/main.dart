@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
 import 'screens/quiz_screen.dart';
@@ -5,7 +6,14 @@ import 'screens/results_screen.dart';
 import 'screens/login_signup_screen.dart';
 import 'screens/signup_form_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  try {
+    await Firebase.initializeApp();
+    print('Firebase initialized successfully!');
+  } catch (e) {
+    print('Failed to initialize Firebase: $e');
+  }
   runApp(const QuizApp());
 }
 
