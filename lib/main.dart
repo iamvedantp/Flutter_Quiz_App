@@ -1,10 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
+import 'screens/guest_login_screen.dart';
 import 'screens/quiz_screen.dart';
 import 'screens/results_screen.dart';
-import 'screens/login_signup_screen.dart';
-import 'screens/signup_form_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,12 +27,13 @@ class QuizApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/login',
+      initialRoute: '/',
       routes: {
-        '/': (context) => const HomeScreen(),
-        '/home': (context) => const HomeScreen(),
-        '/login': (context) => const LoginSignupScreen(),
-        '/signup': (context) => const SignupFormScreen(),
+        '/': (context) => const GuestLoginScreen(),
+        '/home': (context) {
+          final args = ModalRoute.of(context)!.settings.arguments as String;
+          return HomeScreen(userName: args);
+        },
         '/quiz': (context) {
           final args = ModalRoute.of(context)!.settings.arguments as String;
           return QuizScreen(difficulty: args);
