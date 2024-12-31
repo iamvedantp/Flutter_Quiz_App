@@ -27,6 +27,7 @@ class _GuestLoginScreenState extends State<GuestLoginScreen> {
       appBar: AppBar(
         title: Text('Guest Login'),
         centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
