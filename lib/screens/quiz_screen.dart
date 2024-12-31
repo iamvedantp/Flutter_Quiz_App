@@ -77,19 +77,19 @@ class _QuizScreenState extends State<QuizScreen> {
 
     return WillPopScope(
       onWillPop: () async {
-        Navigator.pushReplacementNamed(context, '/');
+        Navigator.pushReplacementNamed(context, '/home');
         return false;
       },
       child: Scaffold(
         appBar: AppBar(
           title: GestureDetector(
-            onTap: () => Navigator.pushReplacementNamed(context, '/'),
+            onTap: () => Navigator.pushReplacementNamed(context, '/home'),
             child: const Text('Quiz'),
           ),
           automaticallyImplyLeading: false,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pushReplacementNamed(context, '/'),
+            onPressed: () => Navigator.pushReplacementNamed(context, '/home'),
           ),
         ),
         body: Center(
