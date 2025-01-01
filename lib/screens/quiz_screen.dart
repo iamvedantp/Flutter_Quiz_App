@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../models/question_model.dart';
 import '../questions/easy_questions.dart';
 import '../questions/medium_questions.dart';
@@ -11,10 +10,10 @@ class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key, required this.difficulty});
 
   @override
-  _QuizScreenState createState() => _QuizScreenState();
+  QuizScreenState createState() => QuizScreenState();
 }
 
-class _QuizScreenState extends State<QuizScreen> {
+class QuizScreenState extends State<QuizScreen> {
   int _currentQuestionIndex = 0;
   int _selectedOptionIndex = -1;
   bool _isAnswered = false;
@@ -41,31 +40,33 @@ class _QuizScreenState extends State<QuizScreen> {
       });
 
       Future.delayed(const Duration(seconds: 1), () {
-        if (_currentQuestionIndex < questions.length - 1) {
-          setState(() {
-            _currentQuestionIndex++;
-            _selectedOptionIndex = -1;
-            _isAnswered = false;
-          });
-        } else {
-          List<Map<String, dynamic>> results = questions.map((q) {
-            bool isCorrect = q.selectedOptionIndex == q.correctOptionIndex;
-            return {
-              'question': q.text,
-              'selectedOption': q.options[q.selectedOptionIndex],
-              'correctOption': q.options[q.correctOptionIndex],
-              'isCorrect': isCorrect,
-            };
-          }).toList();
+        if (mounted) {
+          if (_currentQuestionIndex < questions.length - 1) {
+            setState(() {
+              _currentQuestionIndex++;
+              _selectedOptionIndex = -1;
+              _isAnswered = false;
+            });
+          } else {
+            List<Map<String, dynamic>> results = questions.map((q) {
+              bool isCorrect = q.selectedOptionIndex == q.correctOptionIndex;
+              return {
+                'question': q.text,
+                'selectedOption': q.options[q.selectedOptionIndex],
+                'correctOption': q.options[q.correctOptionIndex],
+                'isCorrect': isCorrect,
+              };
+            }).toList();
 
-          int score = results.where((r) => r['isCorrect']).length;
+            int score = results.where((r) => r['isCorrect']).length;
 
-          Navigator.pushNamed(context, '/results', arguments: {
-            'score': score,
-            'totalQuestions': questions.length,
-            'results': results,
-            'difficulty': widget.difficulty,
-          });
+            Navigator.pushNamed(context, '/results', arguments: {
+              'score': score,
+              'totalQuestions': questions.length,
+              'results': results,
+              'difficulty': widget.difficulty,
+            });
+          }
         }
       });
     }
@@ -74,22 +75,27 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   Widget build(BuildContext context) {
     final currentQuestion = questions[_currentQuestionIndex];
+    final userName =
+        ModalRoute.of(context)?.settings.arguments as String? ?? 'Guest';
 
-    return WillPopScope(
-      onWillPop: () async {
-        Navigator.pushReplacementNamed(context, '/home');
-        return false;
+    return PopScope(
+      onPopInvokedWithResult: (dynamic, result) {
+        Navigator.pushReplacementNamed(context, '/home', arguments: userName);
+        return;
+        //Indicates Successful holding of pop action.
       },
       child: Scaffold(
         appBar: AppBar(
           title: GestureDetector(
-            onTap: () => Navigator.pushReplacementNamed(context, '/home'),
+            onTap: () => Navigator.pushReplacementNamed(context, '/home',
+                arguments: userName),
             child: const Text('Quiz'),
           ),
           automaticallyImplyLeading: false,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pushReplacementNamed(context, '/home'),
+            onPressed: () => Navigator.pushReplacementNamed(context, '/home',
+                arguments: userName),
           ),
         ),
         body: Center(

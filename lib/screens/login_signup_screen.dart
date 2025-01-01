@@ -5,10 +5,10 @@ class LoginSignupScreen extends StatefulWidget {
   const LoginSignupScreen({super.key});
 
   @override
-  _LoginSignupScreenState createState() => _LoginSignupScreenState();
+  LoginSignupScreenState createState() => LoginSignupScreenState();
 }
 
-class _LoginSignupScreenState extends State<LoginSignupScreen> {
+class LoginSignupScreenState extends State<LoginSignupScreen> {
   bool isLogin = true; // Toggles between login and signup
 
   final TextEditingController emailController = TextEditingController();
