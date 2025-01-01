@@ -16,10 +16,10 @@ class ResultsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        Navigator.pushReplacementNamed(context, '/home'); // Back to Home
-        return false;
+    return PopScope(
+      onPopInvokedWithResult: (dynamic, result) {
+        Navigator.pushReplacementNamed(context, '/home'); //Back to home
+        return;
       },
       child: Scaffold(
         appBar: AppBar(

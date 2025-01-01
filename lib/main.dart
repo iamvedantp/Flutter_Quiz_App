@@ -38,10 +38,10 @@ class QuizApp extends StatelessWidget {
           final args = ModalRoute.of(context)?.settings.arguments
               as Map<String, dynamic>;
           return ResultsScreen(
-            score: args?['score'] ?? 0,
-            totalQuestions: args?['totalQuestions'] ?? 0,
-            results: args?['results'] ?? [],
-            difficulty: args?['difficulty'] ?? 'easy',
+            score: args['score'] ?? 0,
+            totalQuestions: args['totalQuestions'] ?? 0,
+            results: args['results'] ?? [],
+            difficulty: args['difficulty'] ?? 'easy',
           );
         },
       },
