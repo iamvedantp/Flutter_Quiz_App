@@ -14,40 +14,36 @@ class QuizApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false, // Disable debug banner
+      debugShowCheckedModeBanner: false,
       title: 'Quiz App',
       theme: ThemeData(
-        primarySwatch: Colors.blue, // Set the primary theme color
+        primarySwatch: Colors.blue,
       ),
-      initialRoute: '/', // The initial route of the application
+      initialRoute: '/',
       routes: {
-        '/': (context) => const GuestLoginScreen(), // Entry point for login
-
-        // Home Screen route: Pass the username as an argument
+        '/': (context) => const GuestLoginScreen(),
         '/home': (context) {
           final userName =
               ModalRoute.of(context)?.settings.arguments as String?;
-          return HomeScreen(
-              userName: userName ?? 'Guest'); // Fallback to 'Guest' if null
+          return HomeScreen(userName: userName ?? 'Guest');
         },
-
-        // Quiz Screen route: Pass the difficulty level as an argument
         '/quiz': (context) {
-          final difficulty =
-              ModalRoute.of(context)?.settings.arguments as String?;
+          final args =
+              ModalRoute.of(context)?.settings.arguments as Map<String, String>;
           return QuizScreen(
-              difficulty: difficulty ?? 'easy'); // Default to 'easy'
+            difficulty: args['difficulty'] ?? 'easy',
+            userName: args['userName'] ?? 'Guest',
+          );
         },
-
-        // Results Screen route: Pass score, total questions, results, and difficulty as arguments
         '/results': (context) {
           final args = ModalRoute.of(context)?.settings.arguments
               as Map<String, dynamic>;
           return ResultsScreen(
-            score: args['score'] ?? 0, // Default to 0 if score is null
-            totalQuestions: args['totalQuestions'] ?? 0, // Default to 0
-            results: args['results'] ?? [], // Default to an empty list
-            difficulty: args['difficulty'] ?? 'easy', // Default to 'easy'
+            score: args['score'] ?? 0,
+            totalQuestions: args['totalQuestions'] ?? 0,
+            results: args['results'] ?? [],
+            difficulty: args['difficulty'] ?? 'easy',
+            userName: args['userName'] ?? 'Guest',
           );
         },
       },

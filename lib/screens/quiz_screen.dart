@@ -6,8 +6,13 @@ import '../questions/hard_questions.dart';
 
 class QuizScreen extends StatefulWidget {
   final String difficulty;
+  final String userName; // Add userName parameter
 
-  const QuizScreen({super.key, required this.difficulty});
+  const QuizScreen({
+    super.key,
+    required this.difficulty,
+    required this.userName, // Add required userName
+  });
 
   @override
   QuizScreenState createState() => QuizScreenState();
@@ -60,12 +65,17 @@ class QuizScreenState extends State<QuizScreen> {
 
             int score = results.where((r) => r['isCorrect']).length;
 
-            Navigator.pushNamed(context, '/results', arguments: {
-              'score': score,
-              'totalQuestions': questions.length,
-              'results': results,
-              'difficulty': widget.difficulty,
-            });
+            Navigator.pushNamed(
+              context,
+              '/results',
+              arguments: {
+                'score': score,
+                'totalQuestions': questions.length,
+                'results': results,
+                'difficulty': widget.difficulty,
+                'userName': widget.userName, // Pass userName to results
+              },
+            );
           }
         }
       });
@@ -75,27 +85,34 @@ class QuizScreenState extends State<QuizScreen> {
   @override
   Widget build(BuildContext context) {
     final currentQuestion = questions[_currentQuestionIndex];
-    final userName =
-        ModalRoute.of(context)?.settings.arguments as String? ?? 'Guest';
 
     return PopScope(
       onPopInvokedWithResult: (dynamic, result) {
-        Navigator.pushReplacementNamed(context, '/home', arguments: userName);
+        Navigator.pushReplacementNamed(
+          context,
+          '/home',
+          arguments: widget.userName, // Pass userName when going back
+        );
         return;
-        //Indicates Successful holding of pop action.
       },
       child: Scaffold(
         appBar: AppBar(
           title: GestureDetector(
-            onTap: () => Navigator.pushReplacementNamed(context, '/home',
-                arguments: userName),
+            onTap: () => Navigator.pushReplacementNamed(
+              context,
+              '/home',
+              arguments: widget.userName, // Pass userName
+            ),
             child: const Text('Quiz'),
           ),
           automaticallyImplyLeading: false,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pushReplacementNamed(context, '/home',
-                arguments: userName),
+            onPressed: () => Navigator.pushReplacementNamed(
+              context,
+              '/home',
+              arguments: widget.userName, // Pass userName
+            ),
           ),
         ),
         body: Center(
