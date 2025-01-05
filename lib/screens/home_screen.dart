@@ -9,16 +9,13 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // App bar title
         title: const Text('Flutter Quiz App'),
         automaticallyImplyLeading: false,
         centerTitle: true,
         actions: [
-          // Popup menu button for additional actions
           PopupMenuButton<String>(
             onSelected: (value) {
               if (value == 'logout') {
-                // Navigate back to the Guest Login screen
                 Navigator.pushReplacementNamed(context, '/');
               }
             },
@@ -43,7 +40,6 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Greeting the user with their name
             Text(
               'Welcome, $userName!',
               style: const TextStyle(
@@ -54,37 +50,54 @@ class HomeScreen extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20.0),
-            // Prompting the user to choose a difficulty level
             const Text(
               'Choose a Difficulty Level:',
               style: TextStyle(fontSize: 18.0),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20.0),
-            // Easy difficulty button
             DifficultyButton(
               difficulty: 'Easy',
               color: Colors.green,
               onPressed: () {
-                Navigator.pushNamed(context, '/quiz', arguments: 'easy');
+                Navigator.pushNamed(
+                  context,
+                  '/quiz',
+                  arguments: {
+                    'difficulty': 'easy',
+                    'userName': userName,
+                  },
+                );
               },
             ),
             const SizedBox(height: 10.0),
-            // Medium difficulty button
             DifficultyButton(
               difficulty: 'Medium',
               color: Colors.orange,
               onPressed: () {
-                Navigator.pushNamed(context, '/quiz', arguments: 'medium');
+                Navigator.pushNamed(
+                  context,
+                  '/quiz',
+                  arguments: {
+                    'difficulty': 'medium',
+                    'userName': userName,
+                  },
+                );
               },
             ),
             const SizedBox(height: 10.0),
-            // Hard difficulty button
             DifficultyButton(
               difficulty: 'Hard',
               color: Colors.red,
               onPressed: () {
-                Navigator.pushNamed(context, '/quiz', arguments: 'hard');
+                Navigator.pushNamed(
+                  context,
+                  '/quiz',
+                  arguments: {
+                    'difficulty': 'hard',
+                    'userName': userName,
+                  },
+                );
               },
             ),
           ],
@@ -94,11 +107,10 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-// A reusable widget for difficulty level buttons
 class DifficultyButton extends StatelessWidget {
-  final String difficulty; // Difficulty level label (e.g., Easy, Medium, Hard)
-  final Color color; // Button background color
-  final VoidCallback onPressed; // Callback for button press
+  final String difficulty;
+  final Color color;
+  final VoidCallback onPressed;
 
   const DifficultyButton({
     super.key,
@@ -116,7 +128,6 @@ class DifficultyButton extends StatelessWidget {
         textStyle: const TextStyle(fontSize: 18.0),
       ),
       onPressed: onPressed,
-      // Displaying the difficulty level as button text
       child: Text(difficulty),
     );
   }

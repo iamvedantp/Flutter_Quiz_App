@@ -5,6 +5,7 @@ class ResultsScreen extends StatelessWidget {
   final int totalQuestions;
   final List<Map<String, dynamic>> results;
   final String difficulty;
+  final String userName; // Add userName parameter
 
   const ResultsScreen({
     super.key,
@@ -12,25 +13,38 @@ class ResultsScreen extends StatelessWidget {
     required this.totalQuestions,
     required this.results,
     required this.difficulty,
+    required this.userName, // Add required userName
   });
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
       onPopInvokedWithResult: (dynamic, result) {
-        Navigator.pushReplacementNamed(context, '/home'); //Back to home
+        Navigator.pushReplacementNamed(
+          context,
+          '/home',
+          arguments: userName, // Pass userName when going back
+        );
         return;
       },
       child: Scaffold(
         appBar: AppBar(
           title: GestureDetector(
-            onTap: () => Navigator.pushReplacementNamed(context, '/home'),
+            onTap: () => Navigator.pushReplacementNamed(
+              context,
+              '/home',
+              arguments: userName, // Pass userName
+            ),
             child: const Text('Quiz'),
           ),
           automaticallyImplyLeading: false,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pushReplacementNamed(context, '/home'),
+            onPressed: () => Navigator.pushReplacementNamed(
+              context,
+              '/home',
+              arguments: userName, // Pass userName
+            ),
           ),
         ),
         body: Padding(
@@ -85,7 +99,10 @@ class ResultsScreen extends StatelessWidget {
                   Navigator.pushReplacementNamed(
                     context,
                     '/quiz',
-                    arguments: difficulty,
+                    arguments: {
+                      'difficulty': difficulty,
+                      'userName': userName, // Pass userName when restarting
+                    },
                   );
                 },
                 child: const Text('Restart Quiz'),
