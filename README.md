@@ -1,16 +1,29 @@
 # quiz_app
 
-A new Flutter project.
+A Flutter application for testing your knowledge in a fun and engaging way!
 
-## Getting Started
+# Features
 
-This project is a starting point for a Flutter application.
+- Multiple Difficulty Levels: Choose between easy, medium, and hard quizzes to suit your learning needs.
+- Track Your Progress: Review your answers and see how you did on each question.
+- Restart and Play Again: Keep practicing and improving your score by restarting the quiz.
 
-A few resources to get you started if this is your first Flutter project:
+# Getting Started
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Prerequisites
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Flutter installed on your development machine. You can follow the official guide to get started: https://docs.flutter.dev/get-started/install
+
+# Running the App
+
+1. Clone this repository.
+2. Open the project in your favorite code editor.
+3. Run the app using flutter run.
+
+# Contributing
+
+We welcome contributions to this project!
+
+# License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
