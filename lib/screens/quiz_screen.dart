@@ -30,29 +30,32 @@ class QuizScreenState extends State<QuizScreen> {
     questions = loadQuestionsForDifficulty(widget.difficulty);
   }
 
+  // Function to load questions based on difficulty
   List<Question> loadQuestionsForDifficulty(String difficulty) {
     if (difficulty == 'easy') return easyQuestions;
     if (difficulty == 'medium') return mediumQuestions;
     return hardQuestions;
   }
 
+  // Function to handle answer submission and navigate to results
   void _submitAnswer() {
     if (_selectedOptionIndex != -1) {
       setState(() {
         _isAnswered = true;
         questions[_currentQuestionIndex].selectedOptionIndex =
-            _selectedOptionIndex;
+            _selectedOptionIndex; // Update selected option index
       });
 
       Future.delayed(const Duration(seconds: 1), () {
         if (mounted) {
           if (_currentQuestionIndex < questions.length - 1) {
             setState(() {
-              _currentQuestionIndex++;
+              _currentQuestionIndex++; // Move to next question
               _selectedOptionIndex = -1;
               _isAnswered = false;
             });
           } else {
+            // Calculate results and navigate to results screen
             List<Map<String, dynamic>> results = questions.map((q) {
               bool isCorrect = q.selectedOptionIndex == q.correctOptionIndex;
               return {
@@ -87,6 +90,7 @@ class QuizScreenState extends State<QuizScreen> {
     final currentQuestion = questions[_currentQuestionIndex];
 
     return PopScope(
+      // Handle back button press
       onPopInvokedWithResult: (dynamic, result) {
         Navigator.pushReplacementNamed(
           context,
@@ -98,6 +102,7 @@ class QuizScreenState extends State<QuizScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: GestureDetector(
+            // Tappable app bar title
             onTap: () => Navigator.pushReplacementNamed(
               context,
               '/home',
